@@ -1,0 +1,217 @@
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://intramuros.gov.ph/wp-content/uploads/2022/07/0-02-06-6968bc2e52d8bdb29f34018a55e8950ff11d691200d87c3dafc2b49e19dbce57_1c6dac188bb56d.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            max-height: 700px;
+            /* Adjusted for better fit */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            /* Ensure content fits within container */
+        }
+
+        .image-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* Prevent image overflow */
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .form-container {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .form-section h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .form-section p.subtitle {
+            margin: 0 0 25px 0;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .form-group-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-container label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .form-check input {
+            margin-right: 10px;
+        }
+
+        .form-check a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .form-check a:hover {
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-actions .forgot-password {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .form-actions .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .form-actions .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn,
+        .google-btn {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            flex: 1;
+        }
+
+        .google-btn {
+            background-color: #2D3748;
+            border: 1px solid #ccc;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .guest-option,
+        .login-link {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .guest-option p {
+            margin: 20px 0 0 0;
+            /* Consistent margin-top with buttons */
+        }
+
+        .guest-option a {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .guest-option a:hover {
+            text-decoration: underline;
+        }
+
+        .separator {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
+        .separator span {
+            margin: 0 10px;
+        }
