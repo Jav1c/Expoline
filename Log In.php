@@ -1,23 +1,25 @@
 <?php
 require 'config.php';
+
 if(isset($_POST["submit"])){
     $EmailUsername = $_POST["EmailUsername"];
-    $Password = $_POST["Password"];
-    $result = mysqli_query($conn, "SELECT * FROM user WHERE Username = '$EmailUsername' OR Email = '$EmailUsername");
+    $Password = $_POST["password"];
+    $result = mysqli_query($conn, "SELECT * FROM user WHERE Email = '$EmailUsername'");
     $row = mysqli_fetch_assoc($result);
     if(mysqli_num_rows($result)>0){
-        if($Password == $row["Password"]){
+        if(password_verify($Password, $row["password"])){
             $_SESSION["login"] = true;
             $_SESSION["id"] = $row["id"];
             header("Location: app-files/tour.php");
+            exit(); // Stop executing the script and redirect to tour.php
         }
         else{
-            echo "<script>'Wrong Password'</script>"; 
+            echo "<script>alert('Wrong Password');</script>"; 
         }
 
     }
     else{
-        echo "<script>'User not Registered'</script>";
+        echo "<script>alert('User not Registered');</script>";
     }
 }
 ?>
@@ -272,32 +274,34 @@ if(isset($_POST["submit"])){
             <a href="home.php" class="back-button"><span class="arrow">&larr;</span> Back to Home</a>
             <h2>Log In</h2>
             <p class="subtitle">Don't have an account? <a href="Sign Up.php">Sign Up</a></p>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Email">
-            </div>
-            <div class="form-group password-container">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Password">
-                <span class="toggle-password" onclick="togglePassword()">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-            <div class="form-actions">
-                <div class="remember-me">
-                    <input type="checkbox" id="remember-me">
-                    <label for="remember-me">Remember me</label>
+            <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"])?>" method="post">
+                <div class="form-group">
+                    <label for="EmailUsername">Email</label>
+                    <input type="email" id="EmailUsername" name="EmailUsername" placeholder="Email">
                 </div>
-                <a href="Forgot Password.html" class="forgot-password">Forgot password?</a>
-            </div>
-            <button class="submit-btn">Log In</button>
-            <div class="separator">
-                <p>OR</p>
-            </div>
-            <button class="google-btn">
-                <img src="google-icon.png" alt="Google">
-                Log In with Google
-            </button>
+                <div class="form-group password-container">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password">
+                    <span class="toggle-password" onclick="togglePassword()">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+                <div class="form-actions">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember-me" name="remember-me">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <a href="Forgot Password.php" class="forgot-password">Forgot password?</a>
+                </div>
+                <button class="submit-btn" name="submit">Log In</button>
+                <div class="separator">
+                    <p>OR</p>
+                </div>
+                <button class="google-btn">
+                    <img src="google-icon.png" alt="Google">
+                    Log In with Google
+                </button>
+            </form>
         </div>
     </div>
 

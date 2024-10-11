@@ -26,18 +26,22 @@ if (isset($_POST["submit"])) {
         echo "<script>alert('Password doesn\'t match')</script>";
     } else {
         // Check if email already exists
-        $duplicate = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email'");
-        if (mysqli_num_rows($duplicate) > 0) {
+        $stmt = $conn->prepare("SELECT * FROM user WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
             echo "<script>alert('Username or Email has already taken')</script>";
         } else {
             // Hash password
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
             // Insert data into database
-            $query = "INSERT INTO user VALUES('$firstName','$lastName','$email','$hash','$dob')";
-            mysqli_query($conn, $query);
+            $stmt = $conn->prepare("INSERT INTO user (firstName, lasName, email, password, dob) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $firstName, $lastName, $email, $hash, $dob);
+            $stmt->execute();
             echo "<script>alert('Registration Successful')</script>";
-            header("Location:'Login.php");
+            header("Location:Log In.php");
         }
     }
 }
@@ -62,17 +66,17 @@ if (isset($_POST["submit"])) {
             <div class="form-section">
                 <h2>Create account</h2>
                 <p class="subtitle">Fill in your details to get started.</p>  
-                <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"])?>"method="post">
+                <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"])?>" method="post">
                     <div class="form-group">
                         <div class="form-group-row">
 
                             <div class="input-container">
                                 <label for="first-name">First name</label>
-                                <input type="text" name= "firstName" id="first-name" placeholder="First name">
+                                <input type="text" name= "firstName" id="firstName" placeholder="First name">
                             </div>
                             <div class="input-container">
                                 <label for="last-name">Last name</label>
-                                <input type="text" name= "lastName" id="last-name" placeholder="Last name">
+                                <input type="text" name= "lastName" id="lastName" placeholder="Last name">
                             </div>
                         </div>
                         <div class="form-group-row">
@@ -88,11 +92,11 @@ if (isset($_POST["submit"])) {
                         <div class="form-group-row">
                             <div class="input-container">
                                 <label for="password">Password</label>
-                                <input type="password" id="password" placeholder="Password">
+                                <input type="password" name="password" id="password" placeholder="Password">
                             </div>
                             <div class="input-container">
                                 <label for="confirmPassword">Confirm password</label>
-                                <input type="password" id="confirmPassword" placeholder="Confirm password">
+                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm password">
                             
                             </div>
                         </div>
@@ -109,7 +113,7 @@ if (isset($_POST["submit"])) {
                         <a href="#" class="forgot-password">Forgot password?</a>
                     </div>
                     <div class="buttons-container">
-                        <button class="submit-btn" type="submit">Create Account</button>
+                        <button class="submit-btn" type="submit" name="submit">Create Account</button>
                         <button class="google-btn">
                             <img src="google-icon.png" alt="Google">
                             Sign in with Google

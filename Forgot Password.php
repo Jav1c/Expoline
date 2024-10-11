@@ -190,7 +190,7 @@
             <div class="logo-overlay"></div>
         </div>
         <div class="form-section">
-            <a href="Log In.html" class="back-button"><span class="arrow">&larr;</span> Back to Login</a>
+            <a href="Log In.php" class="back-button"><span class="arrow">&larr;</span> Back to Login</a>
             <h2>Forgot your password?</h2>
             <p class="subtitle">Don't worry, it happens to all of us. Enter your email below to recover your password.
             </p>
