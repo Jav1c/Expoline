@@ -8,6 +8,15 @@
 
     $conn = mysqli_connect($db_server,$db_user,$db_pass,$db_name);
 
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $session_id = session_id();
+
+    // Insert or update session in the database
+
+   
     /*if($conn){
         echo"You are connected";
     }

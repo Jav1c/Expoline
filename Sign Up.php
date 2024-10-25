@@ -24,6 +24,8 @@ if (isset($_POST["submit"])) {
         echo "<script>alert('Please enter a date of birth')</script>";
     } elseif ($password != $confirmPassword) {
         echo "<script>alert('Password doesn\'t match')</script>";
+    } elseif (strlen($password) < 8 || strlen($password) > 10) {
+        echo "<script>alert('Password must be between 8 and 10 characters long')</script>";
     } else {
         // Check if email already exists
         $stmt = $conn->prepare("SELECT * FROM user WHERE email = ?");
@@ -106,18 +108,10 @@ if (isset($_POST["submit"])) {
                         <label for="terms">I agree to all the <a href="#">Terms and Privacy policy</a></label>
                     </div>
                     <div class="form-actions">
-                        <div class="form-check remember-me">
-                            <input type="checkbox" id="remember-me">
-                            <label for="remember-me">Remember me</label>
-                        </div>
                         <a href="#" class="forgot-password">Forgot password?</a>
                     </div>
                     <div class="buttons-container">
                         <button class="submit-btn" type="submit" name="submit">Create Account</button>
-                        <button class="google-btn">
-                            <img src="google-icon.png" alt="Google">
-                            Sign in with Google
-                        </button>
                     </div>
                     <div class="login-link">
                         <p>Don't have an account? <a href="#">Log In</a></p>
@@ -126,7 +120,7 @@ if (isset($_POST["submit"])) {
                         <span>or</span>
                     </div>
                     <div class="guest-option">
-                        <p><a href="#">Continue as Guest</a></p>
+                        <p><a href="https://app.cloudpano.com/tours/M6RolrHzU">Continue as Guest</a></p>
                     </div>
                 </form>
 

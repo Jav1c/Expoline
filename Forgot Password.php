@@ -1,3 +1,6 @@
+<?php
+require 'send_otp.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -189,25 +192,20 @@
             <img src="exln-bg.jpg" alt="Logo">
             <div class="logo-overlay"></div>
         </div>
-        <div class="form-section">
-            <a href="Log In.php" class="back-button"><span class="arrow">&larr;</span> Back to Login</a>
-            <h2>Forgot your password?</h2>
-            <p class="subtitle">Don't worry, it happens to all of us. Enter your email below to recover your password.
-            </p>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Email">
+        <form action="send_otp.php" method="POST">
+            <div class="form-section">
+                <a href="Log In.php" class="back-button"><span class="arrow">&larr;</span> Back to Login</a>
+                <h2>Forgot your password?</h2>
+                <p class="subtitle">Don't worry, it happens to all of us. Enter your email below to recover your password.</p>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <button class="submit-btn" type="submit">Submit</button>
             </div>
-            <button class="submit-btn">Submit</button>
-            <div class="separator">
-                <p>OR</p>
-            </div>
-            <button class="google-btn">
-                <img src="google-icon.png" alt="Google">
-                Continue with Google
-            </button>
-        </div>
+        </form>
     </div>
+
 </body>
 
 </html>

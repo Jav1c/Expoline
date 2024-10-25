@@ -10,7 +10,7 @@ if(isset($_POST["submit"])){
         if(password_verify($Password, $row["password"])){
             $_SESSION["login"] = true;
             $_SESSION["id"] = $row["id"];
-            header("Location: app-files/tour.php");
+            header("Location: https://app.cloudpano.com/tours/M6RolrHzU");
             exit(); // Stop executing the script and redirect to tour.php
         }
         else{
@@ -287,20 +287,9 @@ if(isset($_POST["submit"])){
                     </span>
                 </div>
                 <div class="form-actions">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember-me" name="remember-me">
-                        <label for="remember-me">Remember me</label>
-                    </div>
                     <a href="Forgot Password.php" class="forgot-password">Forgot password?</a>
                 </div>
                 <button class="submit-btn" name="submit">Log In</button>
-                <div class="separator">
-                    <p>OR</p>
-                </div>
-                <button class="google-btn">
-                    <img src="google-icon.png" alt="Google">
-                    Log In with Google
-                </button>
             </form>
         </div>
     </div>
@@ -320,6 +309,7 @@ if(isset($_POST["submit"])){
             }
         }
     </script>
+
 </body>
 
 </html>

@@ -1,6 +1,26 @@
 <?php
-require 'config.php'
+include ('Log out.php');
+require 'config.php';
+// Manage user sessions
+$session_id = session_id();
+$stmt = $conn->prepare("INSERT INTO user_sessions (session_id) VALUES (?) ON DUPLICATE KEY UPDATE last_activity = NOW()");
+$stmt->bind_param("s", $session_id);
+$stmt->execute();
+$stmt->close();
+// Count active users
+$active_time = 1 * 60; // 1 minute in seconds
+$time_limit = date('Y-m-d H:i:s', time() - $active_time);
+$result = $conn->query("SELECT COUNT(*) as active_users FROM user_sessions WHERE last_activity > '$time_limit'");
+$row = $result->fetch_assoc();
+$active_users = $row['active_users'];
+
+// Clean up old sessions
+$cleanup_time = date('Y-m-d H:i:s', time() - $active_time);
+$conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
+
+// Close connection
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -313,6 +333,78 @@ require 'config.php'
         .footer-icons .view-in-360:hover .view-in-360-text {
             opacity: 1;
         }
+        .active-users {
+            font-size: 40px; /* Adjust font size as needed */
+            color: #fff; /* Change text color to match your design */
+            text-align: right; /* Align text to the right */
+        }
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* Ensure it is above other content */
+            transition: opacity 0.3s ease;
+            opacity: 0; /* Start hidden */
+        }
+
+        .popup.show {
+            display: flex;
+            opacity: 1; /* Show when class 'show' is added */
+        }
+
+        .popup img {
+            max-width: 90%;
+            max-height: 90%;
+            margin: 10px; /* Add some spacing between images */
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 101; /* Above the popup */
+        }
+
+        .popup-content {
+            display: flex;
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space between buttons and image */
+            width: 100%; /* Ensure it takes full width */
+        }
+
+        .prev-button, .next-button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 101; /* Above the popup */
+        }
+
+        .prev-button {
+            margin-right: 20px; /* Space between the button and the image */
+        }
+
+        .next-button {
+            margin-left: 20px; /* Space between the button and the image */
+        }
+
+        #popupImage {
+            max-width: 70%; /* Adjust the image size as needed */
+            max-height: 90%; /* Ensure the image fits well */
+        }
+        
     </style>
 </head>
 
@@ -325,17 +417,22 @@ require 'config.php'
                 <a href="Contact.php">Contact</a>
                 <a href="Log In.php">Log In</a>
                 <a href="Sign Up.php" class="signup">Sign Up</a>
+
             </nav>
         </header>
-
+        <div class="active-users" style="margin-top: 5%; margin-right: 3%; color: white;">
+            <img src="viewers.png" alt="Active Users" style="width: 40px; height: 40px; margin-right: 5px;">
+            <span style="color: white;"><?php echo $active_users; ?></span>
+        </div>
         <div class="text-overlay">
             <div class="text-content">
                 <h1>Explore Museo<br>Ni Rizal<br>While At Home</h1>
                 <p>Explore the rich history of Museo ni Rizal from home with ExpoLine's web-based virtual tour and
                     immersive VR integration.</p>
-                <a href="new 360.html" class="explore-link">
-                    <button class="explore-button">Explore</button>
-                </a>
+
+                    <!--<a href="#" class="explore-link" id="explore-button">
+                        <button class="explore-button">Explore</button>
+                    </a>-->
             </div>
             <div class="side-photos-container">
                 <div class="side-photos">
@@ -346,7 +443,15 @@ require 'config.php'
                 </div>
             </div>
         </div>
-
+        <!-- Popup for 360 new info layout -->
+        <div class="popup" id="popup">
+            <button class="close-button" id="closePopup">Close</button>
+            <div class="popup-content">
+                <button class="prev-button" id="prevImage">Previous Image</button>
+                <img id="popupImage" src="360 new info layout.png" alt="Current Image">
+                <button class="next-button" id="nextImage">Next Image</button>
+            </div>
+        </div>       
         <div class="image-carousel">
             <div class="vertical-line"></div>
             <div class="carousel-indicators">
@@ -359,6 +464,7 @@ require 'config.php'
         <div class="carousel-arrow">
             <img src="arrow.png" alt="Next" class="arrow-image">
         </div>
+
 
         <footer class="footer">
             <div class="footer-icons">
@@ -386,6 +492,11 @@ require 'config.php'
             'https://intramuros.gov.ph/wp-content/uploads/2022/07/0-02-06-6968bc2e52d8bdb29f34018a55e8950ff11d691200d87c3dafc2b49e19dbce57_1c6dac188bb56d.jpg',
             'https://intramuros.gov.ph/wp-content/uploads/2022/07/0-02-06-903e78448f23585184ddf06efc3ba590b3badd8382e471df5d8ea4b5bccc4a10_1c6dac188de42f.jpg',
             'https://intramuros.gov.ph/wp-content/uploads/2022/07/0-02-06-d109f8602f4b139655082ac996623dfe361c99ea8b555474fd1512647591b38d_1c6dad7803803c-1.jpg'
+        ];
+
+        const popimages = [
+            "360 infos new layout_20241024_203038_0000.png",
+            "360 infos new layout.png"
         ];
 
         function updateBackground(index) {
@@ -418,12 +529,62 @@ require 'config.php'
         updateBackground(currentIndex);
         updateDotIndicators(currentIndex);
 
+        // Show popup on page load
+        window.onload = function() {
+            const popup = document.getElementById('popup');
+            popup.classList.add('show'); // Add class to show popup
+            document.getElementById('popupImage').src = popimages[0]; // Set initial image from popimages
+        };
+
+        // Close popup functionality
+        document.getElementById('closePopup').onclick = function() {
+            document.getElementById('popup').style.display = 'none';
+        };
+
+        // Show next image functionality
+        document.getElementById('nextImage').onclick = function() {
+            currentIndex = (currentIndex + 1) % popimages.length; // Cycle through popimages
+            document.getElementById('popupImage').src = popimages[currentIndex]; // Update the image
+        };
+        // Show previous image functionality
+        document.getElementById('prevImage').onclick = function() {
+            currentIndex = (currentIndex - 1 + popimages.length) % popimages.length; // Cycle through popimages
+            document.getElementById('popupImage').src = popimages[currentIndex]; // Update the image
+        };    
+        // Close popup on 'Esc' key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('popup').style.display = 'none';
+            }
+        });
+
         // Function to handle VR icon click
         function viewInVR() {
             // Implement VR view action here
             alert('VR view triggered!');
         }
+
+        // Function to call when the user is about to leave the page
+        function logoutUser () {
+            navigator.sendBeacon('logout.php'); // Use sendBeacon to ensure the request is sent even if the user leaves quickly
+        }
+
+        // Add event listeners for page unload and beforeunload events
+        window.addEventListener('beforeunload', logoutUser );
+        window.addEventListener('unload', logoutUser );
+
     </script>
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/6719de994304e3196ad7450f/1iaugr21s';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>   
 </body>
 
 </html>

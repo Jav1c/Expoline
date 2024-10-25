@@ -1,3 +1,47 @@
+<?php
+require 'config.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php'; // Include Composer's autoloader
+
+$admin_email = 'lopezjvictor09@gmail.com';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
+
+    $mail = new PHPMailer(true);
+    try {
+        //Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
+        $mail->SMTPAuth = true;
+        $mail->Username = 'lopezjvictor09@gmail.com'; // SMTP username
+        $mail->Password = 'wiml tsdk dxbt kgln'; // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587; // TCP port to connect to
+
+        //Recipients
+        $mail->setFrom($email, $name);
+        $mail->addAddress($admin_email); // Add a recipient
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Contact Form Submission: ' . $subject;
+        $mail->Body    = 'Name: ' . $name . '<br>Email: ' . $email . '<br>Message: ' . nl2br($message);
+
+        $mail->send();
+        header('Location: home.php');
+        exit;
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -247,39 +291,46 @@
         </div>
 
         <div class="form-section">
-            <a href="Home.html" class="back-button"><span class="arrow">&larr;</span> Back to Home</a>
+            <a href="Home.php" class="back-button"><span class="arrow">&larr;</span> Back to Home</a>
             <h2>Select Subject?</h2>
             <div class="button-group">
-                <button id="generalInquiry">General Inquiry</button>
-                <button id="techInquiry">Tech Inquiry</button>
-                <button id="others">Others</button>
+                <button type="button" class="subject-button" value="General Inquiry">General Inquiry</button>
+                <button type="button" class="subject-button" value="Tech Inquiry">Tech Inquiry</button>
+                <button type="button" class="subject-button" value="Others">Others</button>
             </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" placeholder="Name">
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" rows="5" placeholder="Write your message here..."></textarea>
-            </div>
-            <button class="submit-btn">Send message</button>
+
+            <form action="" method="post" id="contactForm">
+                <input type="hidden" name="subject" id="subject" value=""> <!-- Hidden input for subject -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                </div>
+                <button class="submit-btn" type="submit">Send message</button>
+            </form>
         </div>
-    </div>
 
-    <script>
-        const buttons = document.querySelectorAll('.button-group button');
-
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                buttons.forEach(btn => btn.classList.remove('clicked'));
-                button.classList.add('clicked');
+        <script>
+            const buttons = document.querySelectorAll('.subject-button');
+            const subjectInput = document.getElementById('subject');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Set the subject input value to the button's value
+                    subjectInput.value = button.value;
+                    // Highlight the clicked button
+                    buttons.forEach(btn => btn.classList.remove('clicked'));
+                    button.classList.add('clicked');
+                });
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>

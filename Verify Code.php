@@ -1,3 +1,7 @@
+<?php 
+require 'check_code.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -149,12 +153,14 @@
             <a href="Log In.html" class="back-button"><span class="arrow">&larr;</span> Back to Login</a>
             <h2>Verify code</h2>
             <p class="subtitle">An authentication code has been sent to your email.</p>
-            <div class="form-group">
-                <label for="code">Enter code</label>
-                <input type="text" id="code" placeholder="Enter code">
-                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
-            </div>
-            <button class="submit-btn">Submit</button>
+            <form action="check_code.php" method="POST">
+                <div class="form-group">
+                    <label for="code">Enter code</label>
+                    <input type="number" id="code" name="code" placeholder="Enter code" required>
+                    <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+                </div>
+                <button class="submit-btn">Submit</button>
+            </form>
         </div>
     </div>
 

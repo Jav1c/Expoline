@@ -1,3 +1,41 @@
+<?php 
+require 'config.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get the email, new password, and confirm password from the form
+    $email = $_POST['email'];
+    $newPassword = $_POST['new-password'];
+    $confirmPassword = $_POST['confirm-password'];
+
+    // Validate password length
+    if (strlen($newPassword) < 8 || strlen($newPassword) > 10) {
+        echo "<script>alert('Password must be between 8 and 10 characters long')</script>";
+    } elseif ($newPassword === $confirmPassword) {
+        // Prepare SQL statement to update the password using email
+        $stmt = $conn->prepare("UPDATE user SET password = ?, code = 0 WHERE email = ?");
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT); // Hash the password for security
+
+        // Bind parameters
+        $stmt->bind_param("ss", $hashedPassword, $email);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
+                echo "Password updated successfully.";
+            } else {
+                echo "No user found with that email or password is the same as the old one.";
+            }
+        } else {
+            echo "Error updating password: " . $stmt->error;
+        }
+
+        // Close the statement
+        $stmt->close();
+    } else {
+        echo "Passwords do not match.";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -146,20 +184,28 @@
             <div class="logo-overlay"></div>
         </div>
         <div class="form-section">
-            <a href="Log In.html" class="back-button"><span class="arrow">&larr;</span> Back to Login</a>
+            <a href="Log In.php" class="back-button"><span class="arrow">&larr;</span> Back to Login</a>
             <h2>Set a New Password</h2>
             <p class="subtitle">Your previous password has been reseted. Please set a new password for your account.</p>
-            <div class="form-group">
-                <label for="new-password">New Password</label>
-                <input type="password" id="new-password" placeholder="Enter new password">
-                <i class="fas fa-eye toggle-password" id="toggleNewPassword"></i>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" placeholder="Confirm new password">
-                <i class="fas fa-eye toggle-password" id="toggleConfirmPassword"></i>
-            </div>
-            <button class="submit-btn">Submit</button>
+            <form action="" method="POST"> <!-- Update the action to your PHP file -->
+                <div class="form-group">
+                    <label for="email">Re-enter Email</label>
+                    <input type="text" id="email" name="email" placeholder="Enter email" required>
+                </div>                
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" name="new-password" placeholder="Enter new password" required>
+                    <i class="fas fa-eye toggle-password" id="toggleNewPassword"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm new password" required>
+                    <i class="fas fa-eye toggle-password" id="toggleConfirmPassword"></i>
+                </div>
+                <button class="submit-btn">Submit</button>
+            </form>
+            
         </div>
     </div>
 
