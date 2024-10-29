@@ -430,9 +430,9 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
                 <p>Explore the rich history of Museo ni Rizal from home with ExpoLine's web-based virtual tour and
                     immersive VR integration.</p>
 
-                    <!--<a href="#" class="explore-link" id="explore-button">
+                    <a href="#" class="explore-link" id="explore-button">
                         <button class="explore-button">Explore</button>
-                    </a>-->
+                    </a>
             </div>
             <div class="side-photos-container">
                 <div class="side-photos">
@@ -495,8 +495,9 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
         ];
 
         const popimages = [
-            "360 infos new layout_20241024_203038_0000.png",
-            "360 infos new layout.png"
+            "360 infos new layout.png",
+            "360 infos new layout_20241024_203038_0000.png"
+            
         ];
 
         function updateBackground(index) {
@@ -529,10 +530,20 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
         updateBackground(currentIndex);
         updateDotIndicators(currentIndex);
 
+// Existing code...
+
         // Show popup on page load
         window.onload = function() {
             const popup = document.getElementById('popup');
             popup.classList.add('show'); // Add class to show popup
+            document.getElementById('popupImage').src = popimages[0]; // Set initial image from popimages
+        };
+
+        // Add event listener for the Explore button
+        document.getElementById('explore-button').onclick = function(event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+            const popup = document.getElementById('popup');
+            popup.classList.add('show'); // Show the popup
             document.getElementById('popupImage').src = popimages[0]; // Set initial image from popimages
         };
 
@@ -546,17 +557,64 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
             currentIndex = (currentIndex + 1) % popimages.length; // Cycle through popimages
             document.getElementById('popupImage').src = popimages[currentIndex]; // Update the image
         };
+
         // Show previous image functionality
         document.getElementById('prevImage').onclick = function() {
             currentIndex = (currentIndex - 1 + popimages.length) % popimages.length; // Cycle through popimages
             document.getElementById('popupImage').src = popimages[currentIndex]; // Update the image
-        };    
+        };
+
         // Close popup on 'Esc' key press
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 document.getElementById('popup').style.display = 'none';
             }
         });
+
+        let popIndex = 0;
+
+        // Show popup on page load (optional, remove if not needed)
+        window.onload = function() {
+            const popup = document.getElementById('popup');
+            popup.classList.add('show'); // Add class to show popup
+            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image from popimages
+        };
+
+        // Add event listener for the Explore button
+        document.getElementById('explore-button').onclick = function(event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+            const popup = document.getElementById('popup');
+            popup.classList.add('show'); // Show the popup
+            popIndex = 0; // Reset index to show the first image
+            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image from popimages
+        };
+
+        // Close popup functionality
+        document.getElementById('closePopup').onclick = function() {
+            document.getElementById('popup').classList.remove('show'); // Hide popup
+        };
+
+        // Show next image functionality
+        document.getElementById('nextImage').onclick = function() {
+            popIndex = (popIndex + 1) % popimages.length; // Cycle through popimages
+            document.getElementById('popupImage').src = popimages[popIndex]; // Update the image
+        };
+
+        // Show previous image functionality
+        document.getElementById('prevImage').onclick = function() {
+            popIndex = (popIndex - 1 + popimages.length) % popimages.length; // Cycle through popimages
+            document.getElementById('popupImage').src = popimages[popIndex]; // Update the image
+        };
+
+        // Close popup on 'Esc' key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('popup').classList.remove('show'); // Hide popup
+            }
+        });
+
+
+// Existing code...
 
         // Function to handle VR icon click
         function viewInVR() {

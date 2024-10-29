@@ -21,9 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Execute the statement
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
-                echo "Password updated successfully.";
+                echo "<script>(Password updated successfully.)</script>";
+                header("Location:Log In.php");
             } else {
-                echo "No user found with that email or password is the same as the old one.";
+                echo "<script>(No user found with that email or password is the same as the old one.)</script>";
             }
         } else {
             echo "Error updating password: " . $stmt->error;
