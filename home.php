@@ -91,7 +91,7 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
         </div>
 
 
-        <footer class="footer">
+        <!--<footer class="footer">
             <div class="footer-icons">
                 <a href="#" class="view-in-360">
                     <img src="360-degrees.png" alt="360 View Icon">
@@ -103,7 +103,7 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
                     <img src="vr.png" alt="VR Icon">
                 </a>
             </div>
-        </footer>
+        </footer>-->
 
     </div>
 
@@ -154,8 +154,6 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
         // Initialize the first background image and dot indicator
         updateBackground(currentIndex);
         updateDotIndicators(currentIndex);
-
-// Existing code...
 
         // Show popup on page load
         window.onload = function() {
@@ -236,8 +234,6 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
                 document.getElementById('popup').classList.remove('show'); // Hide popup
             }
         });
-
-// Existing code...
 
         // Function to handle VR icon click
         function viewInVR() {

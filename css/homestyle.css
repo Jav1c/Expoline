@@ -61,22 +61,44 @@ html {
     margin: 0 35px;
     text-decoration: none;
     color: black;
+    /* Changed to black text */
     font-weight: bold;
     position: relative;
+    white-space: nowrap;
+    text-shadow: 0px -1px 4px rgba(255, 255, 255, 1),
+        /* Top shadow */
+        0px 1px 4px rgba(255, 255, 255, 1);
+    /* Bottom shadow */
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #ff4c4c;
+    text-shadow: 0px -2px 4px rgba(255, 255, 255, 1),
+        0px 2px 4px rgba(255, 255, 255, 1);
 }
 
 .signup {
     border: 2px solid black;
+    /* Changed to black border */
     padding: 8px 15px;
-    border-radius: 0;
-    background-color: transparent;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
     color: black;
+    /* Changed to black text */
     font-weight: bold;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     margin-left: 20px;
+    transition: all 0.3s ease;
 }
+.signup:hover {
+    background-color: black;
+    color: white !important;
+    text-shadow: none !important;
+}
+
 
 .text-overlay {
     position: absolute;
@@ -91,7 +113,6 @@ html {
     min-width: 300px;
     max-width: 400px;
     z-index: 10;
-    /* Higher than header-container, lower than logo */
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -99,9 +120,8 @@ html {
     align-items: flex-start;
     text-align: left;
     box-sizing: border-box;
-    margin-top: 80px;
-    /* Adjust based on header height */
 }
+
 
 .text-content {
     width: 100%;
@@ -125,11 +145,17 @@ html {
 
 .explore-button {
     background-color: #ff4c4c;
+    font-size: 100%;
     color: white;
     padding: 15px 40px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+.explore-button:hover {
+    background-color: white;
+    color: #ff4c4c !important;
+    text-shadow: none !important;
 }
 
 .side-photos-container {
@@ -193,7 +219,7 @@ html {
 
 .carousel-arrow {
     position: absolute;
-    bottom: 250px;
+    bottom: 270px;
     left: 385px;
     /* Adjust this value to move left or right */
     display: flex;
