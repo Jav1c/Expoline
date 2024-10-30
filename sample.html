@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Example</title>
+    <style>
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* Ensure it is above other content */
+            transition: opacity 0.3s ease;
+            opacity: 0; /* Start hidden */
+        }
+
+        .popup.show {
+            display: flex; /* Use flex to center content */
+            opacity: 1; /* Show when class 'show' is added */
+        }
+
+        .popup-content {
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="explore-button">Explore</button>
+
+    <div class="popup" id="popup">
+        <button id="closePopup">Close</button>
+        <div class="popup-content">
+            <button id="prevImage">Previous Image</button>
+            <img id="popupImage" src="360 infos new layout.png" alt="Current Image" style="max-width: 80%; max-height: 80%;">
+            <button id="nextImage">Next Image</button>
+        </div>
+    </div>
+
+    <script>
+        const popimages = [
+            "360 infos new layout.png",
+            "360 infos new layout_20241024_203038_0000.png"
+        ];
+
+        let popIndex = 0; // Initialize the index for popup images
+
+        // Show the popup on page load
+        window.onload = function() {
+            const popup = document.getElementById('popup');
+            popup.classList.add('show'); // Show popup
+            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image
+        };
+
+        // Event listener for the Explore button
+        document.getElementById('explore-button').onclick = function(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const popup = document.getElementById('popup');
+            popup.classList.add('show'); // Show the popup
+            popIndex = 0; // Reset index to show the first image
+            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image
+        };
+
+        // Close popup functionality
+        document.getElementById('closePopup').onclick = function() {
+            document.getElementById('popup').classList.remove('show'); // Hide popup
+        };
+
+        // Show next image functionality
+        document.getElementById('nextImage').onclick = function() {
+            popIndex = (popIndex + 1) % popimages.length; // Cycle through images
+            document.getElementById('popupImage').src = popimages[popIndex]; // Update image
+        };
+
+        // Show previous image functionality
+        document.getElementById('prevImage').onclick = function() {
+            popIndex = (popIndex - 1 + popimages.length) % popimages.length; // Cycle through images
+            document.getElementById('popupImage').src = popimages[popIndex]; // Update image
+        };
+
+        // Close popup on 'Esc' key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('popup').classList.remove('show'); // Hide popup
+            }
+        });
+    </script>
+</body>
+</html>
