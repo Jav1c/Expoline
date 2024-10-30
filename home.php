@@ -214,8 +214,8 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
 
         .carousel-arrow {
             position: absolute;
-            bottom: 80px;
-            left: 388px;
+            bottom:130px;
+            left: 428px;
             display: flex;
             align-items: center;
             justify-content: center;
