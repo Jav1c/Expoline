@@ -29,383 +29,7 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Museo ni Rizal</title>
     <link rel="icon" href="wlogo.png" type="image/png">
-    <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            /* Ensure no overflow from pseudo-element */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: background-image 0.5s ease-in-out;
-        }
-
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://intramuros.gov.ph/wp-content/uploads/2022/07/0-02-06-6968bc2e52d8bdb29f34018a55e8950ff11d691200d87c3dafc2b49e19dbce57_1c6dac188bb56d.jpg');
-            background-size: cover;
-            background-position: center;
-            filter: brightness(80%) contrast(120%);
-            z-index: -1;
-            transition: background-image 0.5s ease-in-out;
-        }
-
-        .header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ffffff;
-            padding-bottom: 10px;
-            z-index: 20;
-        }
-
-        .logo-image {
-            height: 35px;
-            width: auto;
-        }
-
-        .navbar a {
-            margin: 0 35px;
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            position: relative;
-        }
-
-        .signup {
-            border: 2px solid white;
-            padding: 8px 15px;
-            border-radius: 0;
-            background-color: transparent;
-            color: black;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            margin-left: 20px;
-        }
-
-        .text-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: linear-gradient(89deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
-            backdrop-filter: blur(24.86px);
-            -webkit-backdrop-filter: blur(24.86px);
-            padding: 30px;
-            border-radius: 0;
-            width: 25%;
-            z-index: 10;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            text-align: left;
-        }
-
-        .text-content {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-bottom: 60px;
-        }
-
-        .text-overlay h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .text-overlay p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: black;
-            text-align: justify;
-        }
-
-        .explore-button {
-            background-color: #ff4c4c;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .side-photos-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .side-photos {
-            display: flex;
-            gap: 10px;
-        }
-
-        .side-photos img {
-            width: 130px;
-            height: 130px;
-            border-radius: 10px;
-            border: 1px solid white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .image-carousel {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .vertical-line {
-            width: 2px;
-            height: 50px;
-            background-color: white;
-        }
-
-        .carousel-indicators {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            background-color: white;
-            border-radius: 50%;
-            cursor: pointer;
-            opacity: 0.5;
-            z-index: 10;
-            /* Ensure dots are on top */
-        }
-
-        .dot.active {
-            opacity: 1;
-        }
-
-        .carousel-arrow {
-            position: absolute;
-            bottom:130px;
-            left: 428px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 30;
-        }
-
-        .arrow-image {
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-
-        .arrow-image:hover {
-            opacity: 0.8;
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            right: 40px;
-            display: flex;
-            align-items: center;
-            color: white;
-            gap: 15px;
-            /* Add gap between items */
-        }
-
-        .footer-icons {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .footer-icons span {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            background: none;
-            border-radius: 5px;
-            gap: 10px;
-            /* Align icon and text */
-        }
-
-        .separator {
-            height: 1px;
-            width: 50px;
-            background-color: white;
-        }
-
-        .footer-icons span img,
-        .footer-icons a img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
-
-        .vr-icon-container {
-            position: relative;
-            display: inline-flex;
-            /* Use inline-flex for alignment */
-            align-items: center;
-            cursor: pointer;
-            margin-right: 5px; /* Adjust this value as needed */
-        }
-
-        .vr-icon-container::after {
-            content: "View in VR";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-bottom: 5px;
-            padding: 5px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            font-size: 14px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-
-        .vr-icon-container:hover::after {
-            opacity: 1;
-        }
-
-        .footer-icons .view-in-360 {
-            position: relative;
-            display: inline-flex;
-            /* Use inline-flex for alignment */
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .footer-icons .view-in-360 .view-in-360-text {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-bottom: 5px;
-            padding: 5px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            font-size: 14px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-
-        .footer-icons .view-in-360:hover .view-in-360-text {
-            opacity: 1;
-        }
-        .active-users {
-            font-size: 40px; /* Adjust font size as needed */
-            color: #fff; /* Change text color to match your design */
-            text-align: right; /* Align text to the right */
-        }
-        .popup {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 100; /* Ensure it is above other content */
-            transition: opacity 0.3s ease;
-            opacity: 0; /* Start hidden */
-        }
-
-        .popup.show {
-            display: flex;
-            opacity: 1; /* Show when class 'show' is added */
-        }
-
-        .popup img {
-            max-width: 90%;
-            max-height: 90%;
-            margin: 10px; /* Add some spacing between images */
-        }
-
-        .close-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 101; /* Above the popup */
-        }
-
-        .popup-content {
-            display: flex;
-            align-items: center; /* Center items vertically */
-            justify-content: space-between; /* Space between buttons and image */
-            width: 100%; /* Ensure it takes full width */
-        }
-
-        .prev-button, .next-button {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 101; /* Above the popup */
-        }
-
-        .prev-button {
-            margin-right: 20px; /* Space between the button and the image */
-        }
-
-        .next-button {
-            margin-left: 20px; /* Space between the button and the image */
-        }
-
-        #popupImage {
-            max-width: 70%; /* Adjust the image size as needed */
-            max-height: 90%; /* Ensure the image fits well */
-        }
-        
-    </style>
+    <link rel="stylesheet" href="css/homestyle.css">
 </head>
 
 <body>
@@ -415,8 +39,9 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
             <nav class="navbar">
                 <a href="About.php">About</a>
                 <a href="Contact.php">Contact</a>
-                <a href="Log In.php">Log In</a>
-                <a href="Sign Up.php" class="signup">Sign Up</a>
+                <!--<a href="Log In.php">Log In</a>
+                <a href="Sign Up.php" class="signup">Sign Up</a>-->
+                <a href="https://app.cloudpano.com/tours/M6RolrHzU" class = "signup">View Tour</a>
 
             </nav>
         </header>
@@ -573,20 +198,19 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
 
         let popIndex = 0;
 
-        // Show popup on page load (optional, remove if not needed)
         window.onload = function() {
             const popup = document.getElementById('popup');
-            popup.classList.add('show'); // Add class to show popup
-            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image from popimages
+            popup.classList.add('show'); // Show popup
+            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image
         };
 
-        // Add event listener for the Explore button
+        // Event listener for the Explore button
         document.getElementById('explore-button').onclick = function(event) {
-            event.preventDefault(); // Prevent the default anchor behavior
+            event.preventDefault(); // Prevent default anchor behavior
             const popup = document.getElementById('popup');
             popup.classList.add('show'); // Show the popup
             popIndex = 0; // Reset index to show the first image
-            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image from popimages
+            document.getElementById('popupImage').src = popimages[popIndex]; // Set initial image
         };
 
         // Close popup functionality
@@ -596,14 +220,14 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
 
         // Show next image functionality
         document.getElementById('nextImage').onclick = function() {
-            popIndex = (popIndex + 1) % popimages.length; // Cycle through popimages
-            document.getElementById('popupImage').src = popimages[popIndex]; // Update the image
+            popIndex = (popIndex + 1) % popimages.length; // Cycle through images
+            document.getElementById('popupImage').src = popimages[popIndex]; // Update image
         };
 
         // Show previous image functionality
         document.getElementById('prevImage').onclick = function() {
-            popIndex = (popIndex - 1 + popimages.length) % popimages.length; // Cycle through popimages
-            document.getElementById('popupImage').src = popimages[popIndex]; // Update the image
+            popIndex = (popIndex - 1 + popimages.length) % popimages.length; // Cycle through images
+            document.getElementById('popupImage').src = popimages[popIndex]; // Update image
         };
 
         // Close popup on 'Esc' key press
@@ -612,7 +236,6 @@ $conn->query("DELETE FROM user_sessions WHERE last_activity < '$cleanup_time'");
                 document.getElementById('popup').classList.remove('show'); // Hide popup
             }
         });
-
 
 // Existing code...
 
