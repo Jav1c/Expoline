@@ -504,3 +504,24 @@ html {
     max-width: 70%; /* Adjust the image size as needed */
     max-height: 90%; /* Ensure the image fits well */
 }
+@media (max-width: 768px) {
+    .popup-content {
+        flex-direction: column; /* Stack buttons and image vertically */
+        align-items: center; /* Center items */
+    }
+
+    .prev-button, .next-button {
+        width: 100%; /* Full width for buttons */
+        margin: 10px 0; /* Space between buttons */
+        padding: 12px; /* Increase padding for better touch area */
+    }
+
+    .close-button {
+        top: 10px; /* Adjust close button position */
+        right: 10px; /* Adjust close button position */
+    }
+
+    #popupImage {
+        max-width: 90%; /* Allow image to take more width */
+        max-height: 70%; /* Adjust height for mobile */
+    }

@@ -268,6 +268,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 16px;
             margin-right: 5px;
         }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column; /* Stack elements vertically */
+                height: auto; /* Allow the height to adjust based on content */
+            }
+
+            .container {
+                flex-direction: column; /* Stack sections vertically */
+                height: auto; /* Allow height to adjust */
+                max-height: none; /* Remove max height restriction */
+                padding: 10px; /* Reduce padding */
+            }
+
+            .contact-info-section,
+            .form-section {
+                width: 100%; /* Full width on mobile */
+                padding: 15px; /* Reduce padding */
+            }
+
+            .contact-info-section h2,
+            .form-section h2 {
+                font-size: 20px; /* Smaller font size for headers */
+            }
+
+            .contact-info-section p,
+            .form-group label,
+            .form-group input,
+            .form-group textarea {
+                font-size: 14px; /* Smaller font size for text */
+            }
+
+            .form-section .button-group {
+                flex-direction: column; /* Stack buttons vertically */
+                gap: 10px; /* Reduce spacing between buttons */
+            }
+
+            .submit-btn {
+                width: 100%; /* Full width for the submit button */
+            }
+
+            .back-button {
+                font-size: 12px; /* Smaller font size for back button */
+            }
+
+            .contact-info-section .social-icons {
+                flex-direction: row; /* Keep social icons in a row */
+                justify-content: center; /* Center social icons */
+            }
+}
     </style>
 </head>
 
